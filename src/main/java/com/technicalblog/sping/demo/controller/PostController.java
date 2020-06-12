@@ -11,20 +11,16 @@ import com.technicalblog.sping.demo.model.Post;
 import com.technicalblog.sping.demo.services.PostService;
 
 @Controller
-public class HomeController {
-	
-	@Autowired
-	private PostService postService;
-	
-	@RequestMapping("/")
-	public String getAllPosts(Model model) {
-		
-		ArrayList<Post> list = postService.getAllPosts();
-		
-		model.addAttribute("posts",list);
-		
-		return "index";
-		
-	}
+public class PostController {
+
+    @Autowired
+    private PostService postService;
+
+    @RequestMapping("posts")
+    public String getUserPosts(Model model) {
+        ArrayList<Post> posts = postService.getOnePost();
+        model.addAttribute("posts", posts);
+        return "posts";
+    }
 
 }
