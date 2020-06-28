@@ -2,34 +2,59 @@ package com.technicalblog.sping.demo.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+@Entity
+@Table(name = "posts")
 public class Post {
 
-	private String title;
-	private String body;
-	private Date date;
+   @Id
+   @Column(name = "id")
+   private Integer id;
 
-	public String getTitle() {
-		return title;
-	}
+   @Column(name = "title")
+   private String title;
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+   @Column(name = "body")
+   private String body;
 
-	public String getBody() {
-		return body;
-	}
+   @Transient
+   private Date date;
 
-	public void setBody(String body) {
-		this.body = body;
-	}
+   
+   public Integer getId() {
+       return id;
+   }
 
-	public Date getDate() {
-		return date;
-	}
+   public void setId(Integer id) {
+       this.id = id;
+   }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+   public String getTitle() {
+       return title;
+   }
 
+   public void setTitle(String title) {
+       this.title = title;
+   }
+
+   public String getBody() {
+       return body;
+   }
+
+   public void setBody(String body) {
+       this.body = body;
+   }
+
+   public Date getDate() {
+       return date;
+   }
+
+   public void setDate(Date date) {
+       this.date = date;
+   }
 }

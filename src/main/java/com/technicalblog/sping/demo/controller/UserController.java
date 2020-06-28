@@ -1,6 +1,7 @@
 package com.technicalblog.sping.demo.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +42,7 @@ public class UserController {
 	@RequestMapping(value = "users/logout", method = RequestMethod.POST)
 	public String logout(Model model) {
 
-		ArrayList<Post> list = postService.getAllPosts();
+		List<Post> list = postService.getAllPosts();
 
 		model.addAttribute("posts", list);
 

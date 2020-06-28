@@ -1,7 +1,18 @@
+
 package com.technicalblog.sping.demo.services;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Service;
 
@@ -10,47 +21,81 @@ import com.technicalblog.sping.demo.model.Post;
 @Service
 public class PostService {
 	
-	public ArrayList<Post> getAllPosts() {
-		
-		Post post1 = new Post();
-		post1.setTitle("post 1");
-		post1.setBody("post body 1");
-		post1.setDate(new Date());
-		
-		Post post2 = new Post();
-		post2.setTitle("post 2");
-		post2.setBody("post body 2");
-		post2.setDate(new Date());
-		
-		Post post3 = new Post();
-		post3.setTitle("post 3");
-		post3.setBody("post body 3");
-		post3.setDate(new Date());
-		
+	@PersistenceUnit(unitName = "techblog")
+	private EntityManagerFactory emf;
+
+	public List<Post> getAllPosts() {
+
 		ArrayList<Post> list = new ArrayList<Post>();
-		list.add(post1);
-		list.add(post2);
-		list.add(post3);
 		
-		return list;
+//		Connection connection = null;
+//		try {
+//			Class.forName("org.postgresql.Driver");
+//
+//			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/companydb", "dbuser", "sixt");
+//			Statement statement = connection.createStatement();
+//			ResultSet rs = statement.executeQuery("SELECT * FROM posts");
+//			while (rs.next()) {
+//				Post post = new Post();
+//				post.setTitle(rs.getString("title"));
+//				post.setBody(rs.getString("body"));
+//				list.add(post);
+//			}
+//		} catch (ClassNotFoundException | SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				connection.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		return list;
 		
+		EntityManager em = emf.createEntityManager();
+		
+		TypedQuery<Post> query = em.createQuery("SELECT p from Post p", Post.class);
+		
+
+		List<Post> resultList = query.getResultList();
+
+		return resultList;	
+
 	}
-	
+
 	public ArrayList<Post> getOnePost() {
-		
-        ArrayList<Post> posts = new ArrayList<>();
 
-        Post post1 = new Post();
-        post1.setTitle("This is your Post");
-        post1.setBody("This is your Post. It has some valid content");
-        post1.setDate(new Date());
-        posts.add(post1);
+		ArrayList<Post> posts = new ArrayList<>();
 
-        return posts;
+		Connection connection = null;
+		try {
+			Class.forName("org.postgresql.Driver");
 
-    }
-	
-	public void createPost (Post newPost){
+			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/companydb", "dbuser",
+					"sixt");
+			Statement statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("SELECT * FROM posts WHERE id = 4");
+			while (rs.next()) {
+				Post post = new Post();
+				post.setTitle(rs.getString("title"));
+				post.setBody(rs.getString("body"));
+				posts.add(post);
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return posts;
+
+	}
+
+	public void createPost(Post newPost) {
 	}
 
 }
